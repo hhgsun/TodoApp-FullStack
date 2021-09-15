@@ -1,18 +1,19 @@
 <template>
   <div class="todo-wrapper">
-
     <h2>To Do List App</h2>
 
-    <task-input />
+    <div v-if="isLoad">
+      <task-input />
 
-    <div class="task-list">
-      <task-item
-        v-for="(task, index) in $store.state.tasks"
-        :key="index"
-        :task="task"
-      />
+      <div class="task-list">
+        <task-item
+          v-for="(task, index) in $store.state.tasks"
+          :key="index"
+          :task="task"
+        />
+      </div>
     </div>
-
+    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -22,13 +23,21 @@ import TaskItem from "./components/TaskItem.vue";
 
 export default {
   name: "App",
+  data: () => {
+    return {
+      isLoad: false,
+    };
+  },
   components: {
     TaskInput,
     TaskItem,
   },
-  created(){
-    this.$store.dispatch('getTasks');
-  }
+  created() {
+    this.isLoad = false;
+    this.$store.dispatch("getTasks").then(() => {
+      this.isLoad = true;
+    });
+  },
 };
 </script>
 

@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-
 	fmt.Println("Started Api Server!")
 	Connection()
 	handleRequests()

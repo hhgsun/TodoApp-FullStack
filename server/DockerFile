@@ -9,6 +9,9 @@ RUN go mod download
 
 COPY *.go ./
 
+#test
+RUN go test -v main_test.go
+
 RUN go build -o /main
 
 EXPOSE 8090

@@ -1,7 +1,12 @@
 <template>
   <div class="task-input">
     <form @submit.prevent="handlerInput">
-      <input v-model="text" />
+      <input
+        v-model="text"
+        placeholder="......"
+        :disabled="isWait"
+        ref="text"
+      />
       <small>press enter</small>
     </form>
   </div>
@@ -12,19 +17,29 @@ export default {
   name: "TaskInput",
   data: () => {
     return {
+      isWait: false,
       text: "",
     };
   },
   methods: {
-    handlerInput() {
+    handlerInput: function () {
       if (this.text.length > 0) {
+        this.isWait = true;
         const taskData = {
           text: this.text,
           done: 0,
         };
-        this.$store.dispatch("addTask", taskData);
-        this.text = "";
+        this.$store.dispatch("addTask", taskData).then(() => {
+          this.text = "";
+          this.isWait = false;
+          this.$nextTick(() => {
+            this.focusInput();
+          });
+        });
       }
+    },
+    focusInput: function () {
+      this.$refs.text.focus();
     },
   },
 };
@@ -33,6 +48,7 @@ export default {
 <style>
 .task-input form {
   margin-bottom: 10px;
+  text-align: right;
 }
 .task-input input {
   box-sizing: border-box;

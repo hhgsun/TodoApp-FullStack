@@ -26,15 +26,12 @@ export default createStore({
         state.tasks.splice(index, 1);
       }
     },
-    done(state, payload) {
+    update(state, payload) {
       const index = state.tasks.findIndex(t => t.ID == payload.ID);
       if (index !== -1) {
-        state.tasks[index] = {
-          ...state.tasks[index],
-          Done: true
-        };
+        state.tasks[index] = payload;
       }
-    }
+    },
   },
   actions: {
     async getTasks({ commit }) {
@@ -42,7 +39,7 @@ export default createStore({
         method: "GET"
       });
       const data = await res.json();
-      commit('setAll', data.reverse());
+      commit('setAll', data);
       return data;
     },
     async addTask({ commit }, payload) {
@@ -61,15 +58,13 @@ export default createStore({
       commit('remove', payload);
       return payload;
     },
-    async doneTask({ commit }, payload) {
-      const updateData = { ...payload, Done: true }
-      console.log(payload, updateData)
+    async updateTask({ commit }, payload) {
       const res = await fetch(API_URL + ENDPOINT_TASK + "/" + payload.ID, {
         method: "PUT",
-        body: JSON.stringify(updateData)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
-      commit('done', data);
+      commit('update', data);
       return data;
     }
   }

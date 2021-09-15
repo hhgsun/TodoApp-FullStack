@@ -20,7 +20,11 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var tasks []Task
 	db.Find(&tasks)
-	json.NewEncoder(w).Encode(tasks)
+	if err == gorm.ErrRecordNotFound {
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		json.NewEncoder(w).Encode(tasks)
+	}
 }
 
 func GetTask(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +32,11 @@ func GetTask(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var task Task
 	db.First(&task, params["id"])
-	json.NewEncoder(w).Encode(task)
+	if err == gorm.ErrRecordNotFound {
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		json.NewEncoder(w).Encode(task)
+	}
 }
 
 func AddTask(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +44,11 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	var task Task
 	json.NewDecoder(r.Body).Decode(&task)
 	db.Create(&task)
-	json.NewEncoder(w).Encode(task)
+	if err == gorm.ErrRecordNotFound {
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		json.NewEncoder(w).Encode(task)
+	}
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +58,11 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	db.First(&task, params["id"])
 	json.NewDecoder(r.Body).Decode(&task)
 	db.Save(&task)
-	json.NewEncoder(w).Encode(task)
+	if err == gorm.ErrRecordNotFound {
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		json.NewEncoder(w).Encode(task)
+	}
 }
 
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +70,11 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var task Task
 	db.Delete(&task, params["id"])
-	json.NewEncoder(w).Encode(true)
+	if err == gorm.ErrRecordNotFound {
+		json.NewEncoder(w).Encode(err.Error())
+	} else {
+		json.NewEncoder(w).Encode(true)
+	}
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
