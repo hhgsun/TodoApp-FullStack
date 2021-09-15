@@ -1,27 +1,20 @@
-package main
+package controller
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
+	"github.com/hhgsun/goapi/database"
+	"github.com/hhgsun/goapi/model"
 )
-
-type Task struct {
-	gorm.Model
-	Text string `json:"Text"`
-	Done bool   `json:"Done"`
-}
-
-type Tasks []Task
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var tasks []Task
-	db.Find(&tasks)
-	if err == gorm.ErrRecordNotFound {
-		json.NewEncoder(w).Encode(err.Error())
+	var tasks []model.Task
+	err := database.Db.Find(&tasks)
+	if err.Error != nil {
+		json.NewEncoder(w).Encode(err.Error.Error())
 	} else {
 		json.NewEncoder(w).Encode(tasks)
 	}
@@ -30,10 +23,10 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 func GetTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	var task Task
-	db.First(&task, params["id"])
-	if err == gorm.ErrRecordNotFound {
-		json.NewEncoder(w).Encode(err.Error())
+	var task model.Task
+	err := database.Db.First(&task, params["id"])
+	if err.Error != nil {
+		json.NewEncoder(w).Encode(err.Error.Error())
 	} else {
 		json.NewEncoder(w).Encode(task)
 	}
@@ -41,11 +34,11 @@ func GetTask(w http.ResponseWriter, r *http.Request) {
 
 func AddTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var task Task
+	var task model.Task
 	json.NewDecoder(r.Body).Decode(&task)
-	db.Create(&task)
-	if err == gorm.ErrRecordNotFound {
-		json.NewEncoder(w).Encode(err.Error())
+	err := database.Db.Create(&task)
+	if err.Error != nil {
+		json.NewEncoder(w).Encode(err.Error.Error())
 	} else {
 		json.NewEncoder(w).Encode(task)
 	}
@@ -54,12 +47,12 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	var task Task
-	db.First(&task, params["id"])
+	var task model.Task
+	database.Db.First(&task, params["id"])
 	json.NewDecoder(r.Body).Decode(&task)
-	db.Save(&task)
-	if err == gorm.ErrRecordNotFound {
-		json.NewEncoder(w).Encode(err.Error())
+	err := database.Db.Save(&task)
+	if err.Error != nil {
+		json.NewEncoder(w).Encode(err.Error.Error())
 	} else {
 		json.NewEncoder(w).Encode(task)
 	}
@@ -68,10 +61,10 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	var task Task
-	db.Delete(&task, params["id"])
-	if err == gorm.ErrRecordNotFound {
-		json.NewEncoder(w).Encode(err.Error())
+	var task model.Task
+	err := database.Db.Delete(&task, params["id"])
+	if err.Error != nil {
+		json.NewEncoder(w).Encode(err.Error.Error())
 	} else {
 		json.NewEncoder(w).Encode(true)
 	}
