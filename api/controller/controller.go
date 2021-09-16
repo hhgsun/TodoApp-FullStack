@@ -12,10 +12,9 @@ import (
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var tasks []model.Task
-	err := database.Db.Find(&tasks)
-	if err.Error != nil {
-		json.NewEncoder(w).Encode(err.Error.Error())
+	tasks, err2 := model.FindTasks(database.Db)
+	if err2 != nil {
+		json.NewEncoder(w).Encode(err2.Error())
 	} else {
 		json.NewEncoder(w).Encode(tasks)
 	}
@@ -24,10 +23,9 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 func GetTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	var task model.Task
-	err := database.Db.First(&task, params["id"])
-	if err.Error != nil {
-		json.NewEncoder(w).Encode(err.Error.Error())
+	task, err := model.FirstTask(database.Db, params["id"])
+	if err != nil {
+		json.NewEncoder(w).Encode(err.Error())
 	} else {
 		json.NewEncoder(w).Encode(task)
 	}
@@ -37,9 +35,9 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var task model.Task
 	json.NewDecoder(r.Body).Decode(&task)
-	err := database.Db.Create(&task)
-	if err.Error != nil {
-		json.NewEncoder(w).Encode(err.Error.Error())
+	task, err := model.CreateTask(database.Db, task)
+	if err != nil {
+		json.NewEncoder(w).Encode(err.Error())
 	} else {
 		json.NewEncoder(w).Encode(task)
 	}
@@ -62,10 +60,9 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	var task model.Task
-	err := database.Db.Delete(&task, params["id"])
-	if err.Error != nil {
-		json.NewEncoder(w).Encode(err.Error.Error())
+	_, err := model.DeleteTask(database.Db, params["id"])
+	if err != nil {
+		json.NewEncoder(w).Encode(err.Error())
 	} else {
 		json.NewEncoder(w).Encode(true)
 	}
