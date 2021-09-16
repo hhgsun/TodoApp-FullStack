@@ -2,13 +2,13 @@
 version: 2.1
 jobs:
   build:
-    working_directory: ~/repo/api
+    working_directory: ~/hhgsun/api
     docker:
       - image: circleci/golang:1.15.8
     steps:
       - checkout
       - attach_workspace:
-          at: ~/repo/api
+          at: ~/hhgsun/api
       - run:
           name: Install Dependencies
           command: go mod download
@@ -20,3 +20,5 @@ jobs:
           command: go build
       - store_test_results:
           path: /tmp/test-reports
+    
+  
