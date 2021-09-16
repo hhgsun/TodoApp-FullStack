@@ -19,7 +19,7 @@ var (
 func InitDb() {
 	connstr := os.Getenv("DB_CONN")
 	if connstr == "" {
-		connstr = "postgres://postgres:hhgsun@localhost:5432/todo_db?sslmode=disable"
+		connstr = "postgres://postgres:hhgsun@db:5432/todo_db?sslmode=disable"
 	}
 	//fmt.Println("CONNECT STR: " + connstr)
 	Db, Err = gorm.Open("postgres", connstr) //"postgres://postgres:hhgsun@localhost:5432/todo_db?sslmode=disable"

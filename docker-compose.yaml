@@ -2,20 +2,34 @@ version: '3'
 
 services:
 
+  db:
+    image: postgres
+    container_name: db
+    volumes:
+      - ./db/pgdata:/pgdata
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: hhgsun
+      POSTGRES_DB: todo_db
+      TZ: 'UTC'
+      PGTZ: 'UTC'
+
   api:
     container_name: api
     build:
       context: ./api
     ports:
-      - 8090:8090
+      - "8090:8090"
     restart: on-failure
     environment:
-      DB_CONN: "postgres://hhgsun:hhgsun@localhost:5432/todo_db?sslmode=disable"
+      DB_CONN: postgres://postgres:hhgsun@db:5432/todo_db?sslmode=disable
     volumes:
       - .:/api
-    depends_on:
-      - db
     links:
+      - db
+    depends_on:
       - db
 
   client:
@@ -26,15 +40,5 @@ services:
       - ./client/src:/client/src
     ports:
       - "8080:8080"
-
-  db:
-    image: postgres
-    container_name: db
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_USER: "hhgsun"
-      POSTGRES_PASSWORD: "hhgsun"
-      POSTGRES_DB: "todo_db"
-      TZ: 'UTC'
-      PGTZ: 'UTC'
+    depends_on:
+      - api

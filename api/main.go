@@ -11,6 +11,7 @@ import (
 
 func main() {
 	fmt.Println("Hi!")
+
 	database.InitDb()
 	routers.HandleRequests()
 }
