@@ -4,9 +4,10 @@ import (
 	"log"
 	"net/http"
 
+	"goapi/controller"
+
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/hhgsun/TodoApp-FullStack/api/controller"
 )
 
 func HandleRequests() {

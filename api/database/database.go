@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hhgsun/TodoApp-FullStack/api/model"
+	"goapi/model"
 
 	"github.com/jinzhu/gorm"
 

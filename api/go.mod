@@ -1,4 +1,4 @@
-module github.com/hhgsun/TodoApp-FullStack/api
+module goapi
 
 go 1.17
 

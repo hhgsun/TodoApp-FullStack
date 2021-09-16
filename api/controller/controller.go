@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"goapi/database"
+	"goapi/model"
+
 	"github.com/gorilla/mux"
-	"github.com/hhgsun/TodoApp-FullStack/api/database"
-	"github.com/hhgsun/TodoApp-FullStack/api/model"
 )
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
