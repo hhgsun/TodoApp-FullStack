@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/hhgsun/goapi/database"
-	"github.com/hhgsun/goapi/model"
+	"github.com/hhgsun/TodoApp-FullStack/api/database"
+	"github.com/hhgsun/TodoApp-FullStack/api/model"
 )
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {

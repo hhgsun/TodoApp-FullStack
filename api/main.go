@@ -5,8 +5,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/hhgsun/goapi/database"
-	"github.com/hhgsun/goapi/routers"
+	"github.com/hhgsun/TodoApp-FullStack/api/database"
+	"github.com/hhgsun/TodoApp-FullStack/api/routers"
 )
 
 func main() {

@@ -2,27 +2,28 @@ version: '3'
 
 services:
 
-  server:
-    container_name: server
+  api:
+    container_name: api
     build:
-      context: ./server
+      context: ./api
     ports:
       - 8090:8090
     restart: on-failure
     environment:
       DB_CONN: "postgres://hhgsun:hhgsun@localhost:5432/todo_db?sslmode=disable"
     volumes:
-      - .:/server
+      - .:/api
     depends_on:
       - db
     links:
       - db
 
   client:
+    container_name: client
     build:
       context: ./client
     volumes:
-      - ./client/src:/client/src 
+      - ./client/src:/client/src
     ports:
       - "8080:8080"
 

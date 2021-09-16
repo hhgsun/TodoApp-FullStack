@@ -5,8 +5,8 @@ package main
 import (
 	"testing"
 
-	"github.com/hhgsun/goapi/database"
-	"github.com/hhgsun/goapi/model"
+	"github.com/hhgsun/TodoApp-FullStack/api/database"
+	"github.com/hhgsun/TodoApp-FullStack/api/model"
 )
 
 func TestGetAllTasks(t *testing.T) {
